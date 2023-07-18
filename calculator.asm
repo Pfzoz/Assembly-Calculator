@@ -22,40 +22,40 @@ main:
     push rbp
     mov rbp, rsp
 
-    xor rax, rax
-    ; printf("%s", &strIntro)
+    ; Requisição de operandos
+    xor rax, rax ; printf("%s", &strIntro)
     mov rdi, str_format
     mov rsi, strIntro
     call printf 
 
-    xor rax, rax
-    ; scanf("%f %c %f", &f_A, &c_operation, &f_B)
+    ; Leitura dos operandos
+    xor rax, rax ; scanf("%f %c %f", &f_A, &c_operation, &f_B)
     mov rdi, ops_format
     mov rsi, f_A
     mov rdx, c_operation
     mov rcx, f_B
     call scanf
 
+    ; Identificação de operação
+
+    to_sum: ; soma
+
+    to_subtraction: ; subtração
+
+    to_multiplication: ; multiplicação
+
+    to_division: ; divisão
+
+    to_exponentiation: ; exponenciação
+
     mov rdi, f_A
     mov rsi, f_B
     call exponenciacao
     
-
     mov [f_result], eax
-    
-    fim_expo:
-    mov rax, 1
-    mov rdi, strResultado
-    cvtss2sd xmm0, [f_result]
-    
-    ; mov rsi, f_result
-    call printf
+    jmp write_file
 
-    ; _stopper:
-    ; mov rdi, strStopper
-    ; call printf
-    ; mov rdi, stopper
-    ; call scanf
+    write_file: ; Escrita de arquivo resultado
     
 end:
     mov rsp, rbp

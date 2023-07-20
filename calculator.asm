@@ -67,11 +67,27 @@ main:
 
     to_multiplication: ; multiplicação
     mov [c_operation], byte '*'
-    jmp end
+
+    mov rdi, f_A
+    mov rsi, f_B
+    call multiplication
+    
+    mov [f_result], eax
+    jmp write_file
 
     to_division: ; divisão
     mov [c_operation], byte '/'
-    jmp end
+
+    mov rdi, f_A
+    mov rsi, f_B
+    mov rdx, error
+    call division
+
+    cmp [error], byte 1
+    je error_handle
+
+    mov [f_result], eax
+    jmp write_file
 
     to_exponentiation: ; exponenciação
     mov [c_operation], byte '^'
@@ -79,7 +95,7 @@ main:
     mov rdi, f_A
     mov rsi, f_B
     mov rdx, error
-    call exponenciacao
+    call exponentiation
     
     cmp [error], byte 1
     je error_handle
@@ -118,3 +134,5 @@ end:
     syscall
 
 %include "include/exponentiation.asm"
+%include "include/multiplication.asm"
+%include "include/division.asm"

@@ -1,7 +1,7 @@
-; float exponenciacao( float op1, float op2)
+; float exponentiation( float op1, float op2)
 ; rdi => float A
 ; rsi => float B
-exponenciacao:
+exponentiation:
     ; stack-frame
     push rbp
     mov rbp, rsp

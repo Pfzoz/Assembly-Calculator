@@ -6,9 +6,9 @@ extern printf
 section .data
     str_format   : db "%s", 0
     ops_format   : db "%f %c %f", 0
-    strIntro     : db "Insira os floats e a operação (x operação y): ", 10, 0
-    strResultado : db "Resultado = %f", 10, 0
-    strErro      : db "funcionalidade não disponível", 10, 0
+    strIntro     : db "Insira os floats e a operação ('x' 'operação' 'y'): ", 10, 0
+    strResult    : db "%f %c %f = %f", 10, 0
+    strError     : db "%f %c %f = funcionalidade não disponível", 10, 0
     strStopper   : db "Stopper", 10, 0
     stopper      : db "%d"
 
@@ -42,15 +42,39 @@ main:
 
     ; Identificação de operação
 
+    cmp [c_operation], byte 'a'
+    je to_sum
+
+    cmp [c_operation], byte 's'
+    je to_subtraction
+
+    cmp [c_operation], byte 'm'
+    je to_multiplication
+
+    cmp [c_operation], byte 'd'
+    je to_division
+
+    cmp [c_operation], byte 'e'
+    je to_exponentiation
+
     to_sum: ; soma
+    mov [c_operation], byte '+'
+    jmp end
 
     to_subtraction: ; subtração
+    mov [c_operation], byte '-'
+    jmp end
 
     to_multiplication: ; multiplicação
+    mov [c_operation], byte '*'
+    jmp end
 
     to_division: ; divisão
+    mov [c_operation], byte '/'
+    jmp end
 
     to_exponentiation: ; exponenciação
+    mov [c_operation], byte '^'
 
     mov rdi, f_A
     mov rsi, f_B
@@ -65,9 +89,12 @@ main:
 
     write_file: ; Escrita de arquivo resultado
     ; código teste ; (para verificação)
-        mov rax, 1
-        mov rdi, strResultado
-        cvtss2sd xmm0, [f_result]
+        mov rax, 3
+        mov rdi, strResult
+        mov rsi, [c_operation]
+        cvtss2sd xmm0, [f_A]
+        cvtss2sd xmm1, [f_B]
+        cvtss2sd xmm2, [f_result]
         call printf
     ; fim código teste
 
@@ -75,8 +102,11 @@ main:
 
     error_handle:
     ; código-teste ; (para verificação)
-    xor rax, rax
-    mov rdi, strErro
+    mov rax, 2
+    mov rdi, strError
+    mov rsi, [c_operation]
+    cvtss2sd xmm0, [f_A]
+    cvtss2sd xmm1, [f_B]
     call printf
     ; fim código-teste
 end:

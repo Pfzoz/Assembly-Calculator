@@ -8,11 +8,13 @@ exponenciacao:
 
     sub rsp, 4 ; multiplicando
 
+    mov [rdx], byte 0 ; nenhum erro
+
     ; pegando os floats
     movss xmm0, [rdi] ; xmm0 => float A
     movss xmm1, [rsi] ; xmm1 => float B
 
-    ; truncando pra integer o expoente
+    ; Convert with Truncation from Single Scalar to Single Integer
     cvttss2si r10, xmm1
 
     ; utilizando xmm3 para guardar o multiplicador
@@ -23,7 +25,6 @@ exponenciacao:
     xor r12, r12
     cmp r10, 0
     je one_return
-    cmp r10, 0
     jl negative_warn
 
     dec r10 ; Pois a primeira 'multiplicação' é o próprio número
@@ -55,8 +56,8 @@ exponenciacao:
     ret
 
     negative_warn:
-    mov rax, -1
+    mov [rdx], byte 1
 
-    mov rsp, rbp ; dealloc
-    pop rbp ; de-stack-frame
+    mov rsp, rbp
+    pop rbp
     ret

@@ -4,6 +4,7 @@ extern scanf
 extern printf
 extern fopen
 extern fprintf
+extern fclose
 
 section .data
     str_format   : db "%s", 0
@@ -23,6 +24,7 @@ section .bss
     error : resb 1
     f_result : resb 4
     c_operation : resb 1
+    buf : resb 512
 
 section .text
     global main

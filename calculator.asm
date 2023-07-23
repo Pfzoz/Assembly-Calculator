@@ -2,6 +2,8 @@
 
 extern scanf
 extern printf
+extern fopen
+extern fprintf
 
 section .data
     str_format   : db "%s", 0
@@ -11,6 +13,9 @@ section .data
     strError     : db "%f %c %f = funcionalidade não disponível", 10, 0
     strStopper   : db "Stopper", 10, 0
     stopper      : db "%d"
+    strDebugger  : db "%f", 10, 0
+    fileName     : db "./answers.edmar", 0
+    fileType     : db "a+"
 
 section .bss
     f_A : resb 4
@@ -59,10 +64,19 @@ main:
 
     to_sum: ; soma
     mov [c_operation], byte '+'
-    jmp end
+    mov rdi, f_A
+    mov rsi, f_B
+    call sum
+    movss [f_result], xmm0
+    jmp write_file
 
     to_subtraction: ; subtração
     mov [c_operation], byte '-'
+    mov rdi, f_A
+    mov rsi, f_B
+    call sub
+    movss [f_result], xmm0
+    jmp write_file
     jmp end
 
     to_multiplication: ; multiplicação
@@ -104,7 +118,6 @@ main:
     jmp write_file
 
     write_file: ; Escrita de arquivo resultado
-    ; código teste ; (para verificação)
         mov rax, 3
         mov rdi, strResult
         mov rsi, [c_operation]
@@ -112,19 +125,21 @@ main:
         cvtss2sd xmm1, [f_B]
         cvtss2sd xmm2, [f_result]
         call printf
-    ; fim código teste
+
+        call write_ok
 
     jmp end
 
     error_handle:
-    ; código-teste ; (para verificação)
-    mov rax, 2
-    mov rdi, strError
-    mov rsi, [c_operation]
-    cvtss2sd xmm0, [f_A]
-    cvtss2sd xmm1, [f_B]
-    call printf
-    ; fim código-teste
+        mov rax, 2
+        mov rdi, strError
+        mov rsi, [c_operation]
+        cvtss2sd xmm0, [f_A]
+        cvtss2sd xmm1, [f_B]
+        call printf
+        
+        call write_not_ok
+
 end:
     mov rsp, rbp
     pop rbp
@@ -133,6 +148,9 @@ end:
     mov rdi, 0
     syscall
 
+%include "include/file.asm"
 %include "include/exponentiation.asm"
 %include "include/multiplication.asm"
 %include "include/division.asm"
+%include "include/sum.asm"
+%include "include/sub.asm"

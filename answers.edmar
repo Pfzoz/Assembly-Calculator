@@ -1,13 +1,1 @@
-5.000000 * 2.000000 = 10.000000
-5.000000 - 3.000000 = 2.000000
-100.000000 ^ 100.000000 = inf
-100.000000 ^ 10.000000 = 100000002004087734272.000000
-inf - inf = -nan
-inf + 1.000000 = inf
-nan * nan = nan
-nan / nan = funcionalidade não disponível
-10.000000 ^ -5.000000 = funcionalidade não disponível
--5.000000 ^ 2.000000 = 25.000000
--5.000000 ^ 3.000000 = -125.000000
-inf ^ nan = funcionalidade não disponível
-nan ^ nan = funcionalidade não disponível
+15.000000 * 5.000000 = 75.000000

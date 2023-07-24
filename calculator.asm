@@ -24,7 +24,7 @@ section .bss
     error : resb 1
     f_result : resb 4
     c_operation : resb 1
-    buf : resb 512
+    buf : resq 1
 
 section .text
     global main
